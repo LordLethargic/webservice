@@ -1,30 +1,22 @@
 <?php
-	$server = "localhost";
-	$user = "root";
-	$pswd = "";
-	$database = "PDistribuida";
-	//Creando la conexion
-	$conexion = mysqli_connect($server,$user, $pswd, $database) or die();
 	function buscaAlumnos(){
-		//echo "HOLA";
-		$sql = "SELECT * FROM alumnos";
-		//mysqli_set_charset($conexion, "utf8");
-		if(!$result = mysqli_query($conexion, $sql)) die ();
-		echo "HOLA";
-		$alumnos = array();
-		var_dump($fila = mysqli_fetch_array($result));
-		while($fila = mysqli_fetch_array($result)){
-			$mat = $fila['matricula'];
-			echo $mat;
-			$nombre = $fila['nombre'];
-			$edad = $fila['edad'];
-
-			$alumnos[] = array('matricula'=> $mat, 'nombre'=> $nombre, 'edad'=> $edad);
-			var_dump($alumnos);
+		$server = "localhost";
+		$user = "root";
+		$pswd = "";
+		$database = "PDistribuida";
+		$conexion = mysqli_connect($server,$user, $pswd, $database);
+		if($conexion->connect_errno){
+			printf("conexion fallida");
 		}
-		return alumnos;
+		$l = array();	
+		if(!($alumno = $conexion->query('SELECT * FROM alumnos')))
+			echo 'Algo ocurrio mal';
+		while($fila = $alumno ->fetch_assoc()){
+			$l[]=$fila;
+		}
+		return $l;
 	}
-	
+
 	function mostrarCursos(){
 		$cursos = array('AngularJS','Base de Datos','POO','Ensamblador');
 		return $cursos;
